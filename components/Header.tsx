@@ -9,6 +9,10 @@ const Header = () => {
   return (
     <header>
       <div className="flex flex-col md:flex-row items-center p-5 bg-gray-50 rounded-b-2xl ">
+        <div
+          className="absolute top-0 left-0 w-full h-96 bg-gradient-to-br from-pink-400 to-[#0055D1]
+        rounded-md filter blur-3xl opacity-50 -z-50"
+        />
         <Image
           src={logo}
           alt="trello logo"
@@ -31,13 +35,13 @@ const Header = () => {
           </form>
           {/* <Avatar name="Jasmeet Singh" round={true} color="#0055D1" size="50" /> */}
         </div>
+      </div>
 
-        <div className="flex items-center justify-center px-5 md:py-5">
-          <p className=" flex items-center text-sm font-light shadow-xl rounded-xl p-5 w-fit bg-white italic max-w-3xl text-[#0055D1]">
-            <UserCircleIcon className="inline-block h-10 w-10 text-[#0055D1] mr-1" />
-            GPT is summarising your task for the day
-          </p>
-        </div>
+      <div className="flex items-center justify-center px-5 py-2 md:py-5">
+        <p className=" flex items-center text-sm font-light shadow-xl rounded-xl p-5 w-fit bg-white italic max-w-3xl text-[#0055D1]">
+          <UserCircleIcon className="inline-block h-10 w-10 text-[#0055D1] mr-1" />
+          GPT is summarising your task for the day
+        </p>
       </div>
     </header>
   );
