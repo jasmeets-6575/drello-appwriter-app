@@ -51,7 +51,17 @@ const Board = () => {
     const [todoMoved] = newTodos.splice(source.index, 1);
 
     if (startCol.id === finishCol.id) {
+      // same column task drag
       newTodos.splice(destination.index, 0, todoMoved);
+      const newCol = {
+        id: startCol.id,
+        todos: newTodos,
+      };
+      const newColumns = new Map(board.columns);
+      newColumns.set(startCol.id, newCol);
+      setBoardState({ ...board, columns: newColumns });
+    } else {
+      // dragging to another column
     }
   };
 
