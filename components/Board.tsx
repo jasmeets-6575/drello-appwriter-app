@@ -36,52 +36,59 @@ const Board = () => {
     const startColIndex = columns[Number(source.droppableId)];
     const finishColIndex = columns[Number(destination.droppableId)];
 
-    const startCol = {
-      id: startColIndex[0],
-      todos: startColIndex[1].todos,
-    };
-
-    const finishCol = {
-      id: finishColIndex[0],
-      todos: finishColIndex[1].todos,
-    };
-
-    if (!startCol || !finishCol) return;
-
-    if (source.index === destination.index && startCol === finishCol) return;
-
-    const newTodos = startCol.todos;
-    const [todoMoved] = newTodos.splice(source.index, 1);
-
-    if (startCol.id === finishCol.id) {
-      // same column task drag
-      newTodos.splice(destination.index, 0, todoMoved);
-      const newCol = {
-        id: startCol.id,
-        todos: newTodos,
+    if (
+      Array.isArray(startColIndex) &&
+      startColIndex.length >= 2 &&
+      Array.isArray(finishColIndex) &&
+      finishColIndex.length >= 2
+    ) {
+      const startCol = {
+        id: startColIndex[0],
+        todos: startColIndex[1].todos,
       };
-      const newColumns = new Map(board.columns);
-      newColumns.set(startCol.id, newCol);
-      setBoardState({ ...board, columns: newColumns });
-    } else {
-      // dragging to another column
-      const finishTodos = Array.from(finishCol.todos);
-      finishTodos.splice(destination.index, 0, todoMoved);
 
-      const newColumns = new Map(board.columns);
-      const newCol = {
-        id: startCol.id,
-        todos: newTodos,
+      const finishCol = {
+        id: finishColIndex[0],
+        todos: finishColIndex[1].todos,
       };
-      newColumns.set(startCol.id, newCol);
-      newColumns.set(finishCol.id, {
-        id: finishCol.id,
-        todos: finishTodos,
-      });
 
-      //update in DB
-      updateTodoInDB(todoMoved, finishCol.id);
-      setBoardState({ ...board, columns: newColumns });
+      if (!startCol || !finishCol) return;
+
+      if (source.index === destination.index && startCol === finishCol) return;
+
+      const newTodos = startCol.todos;
+      const [todoMoved] = newTodos.splice(source.index, 1);
+
+      if (startCol.id === finishCol.id) {
+        // same column task drag
+        newTodos.splice(destination.index, 0, todoMoved);
+        const newCol = {
+          id: startCol.id,
+          todos: newTodos,
+        };
+        const newColumns = new Map(board.columns);
+        newColumns.set(startCol.id, newCol);
+        setBoardState({ ...board, columns: newColumns });
+      } else {
+        // dragging to another column
+        const finishTodos = Array.from(finishCol.todos);
+        finishTodos.splice(destination.index, 0, todoMoved);
+
+        const newColumns = new Map(board.columns);
+        const newCol = {
+          id: startCol.id,
+          todos: newTodos,
+        };
+        newColumns.set(startCol.id, newCol);
+        newColumns.set(finishCol.id, {
+          id: finishCol.id,
+          todos: finishTodos,
+        });
+
+        //update in DB
+        updateTodoInDB(todoMoved, finishCol.id);
+        setBoardState({ ...board, columns: newColumns });
+      }
     }
   };
 
