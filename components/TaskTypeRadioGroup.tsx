@@ -3,7 +3,6 @@
 import { useBoardStore } from "@/store/BoardStore";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
 
 const types = [
   {
