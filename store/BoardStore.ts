@@ -1,6 +1,7 @@
 import { databases, storage } from "@/appwrite";
 import { getTodosGroupedByColumn } from "@/lib/getTodosGroupedByColumn";
-import { Board, Column, Todo, TypedColumn } from "@/typings";
+import uploadImage from "@/lib/uploadImage";
+import { Board, Column, Todo, TypedColumn, Image } from "@/typings";
 import { create } from "zustand";
 
 interface BoardState {
@@ -19,6 +20,7 @@ interface BoardState {
   setNewTaskType: (columnId: TypedColumn) => void;
   setImage: (image: File | null) => void;
 
+  addTask: (todo: string, columnId: TypedColumn, image?: File | null) => void;
   deleteTask: (taskIndex: number, todo: Todo, id: TypedColumn) => void;
 }
 
@@ -37,6 +39,10 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     set({ board });
   },
   setBoardState: (board) => set({ board }),
+  setNewTaskInput: (input: string) => set({ newTaskInput: input }),
+  setNewTaskType: (columnId: TypedColumn) => set({ newTaskType: columnId }),
+  setImage: (image: File | null) => set({ image }),
+
   updateTodoInDB: async (todo, columnId) => {
     await databases.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
@@ -62,7 +68,16 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       todo.$id
     );
   },
-  setNewTaskInput: (input: string) => set({ newTaskInput: input }),
-  setNewTaskType: (columnId: TypedColumn) => set({ newTaskType: columnId }),
-  setImage: (image: File | null) => set({ image }),
+  addTask: async (todo: string, columnId: TypedColumn, image?: File | null) => {
+    let file: Image | undefined;
+    if (image) {
+      const fileUploaded = await uploadImage(image);
+      if (fileUploaded) {
+        file = {
+          bucketId: fileUploaded.bucketId,
+          fileId: fileUploaded.$id,
+        };
+      }
+    }
+  },
 }));
