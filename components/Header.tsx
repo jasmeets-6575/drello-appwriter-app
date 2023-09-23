@@ -3,7 +3,6 @@
 import Image from "next/image";
 import logo from "@/public/logo.png";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import Avatar from "react-avatar";
 import { useBoardStore } from "@/store/BoardStore";
 
 const Header = () => {
@@ -40,7 +39,6 @@ const Header = () => {
               Search
             </button>
           </form>
-          {/* <Avatar name="Jasmeet Singh" round={true} color="#0055D1" size="50" /> */}
         </div>
       </div>
 

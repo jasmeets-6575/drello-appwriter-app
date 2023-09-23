@@ -9,6 +9,7 @@ import {
   DraggableProvidedDraggableProps,
 } from "react-beautiful-dnd";
 import getUrl from "@/lib/getUrl";
+import Image from "next/image";
 
 type Props = {
   todo: Todo;
@@ -58,6 +59,18 @@ const TodoCard = ({
           <XCircleIcon className="ml-5 h-8 w-8" />
         </button>
       </div>
+
+      {imageUrl && (
+        <div className=" h-full w-full rounded-b-md">
+          <Image
+            src={imageUrl}
+            alt="Task image"
+            width={400}
+            height={200}
+            className="w-full object-contain rounded-b-md"
+          />
+        </div>
+      )}
     </div>
   );
 };
